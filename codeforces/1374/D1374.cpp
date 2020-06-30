@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long int
@@ -21,15 +22,38 @@ int32_t main()
 	scanf("%lld", &t);
 	while(t--)
 	{
+          int x=0;
           scanf("%lld%lld",&n,&k);
-          multiset<int> ms;
+          multiset<int,greater<int>> ms={};
           for(int i=0;i<n;i++)
           {
                int temp;
                scanf("%lld",&temp);
                if(temp%k != 0)
-                    ms.push(temp%k);
+                    ms.insert(temp%k);
           }
+          if(ms.begin()==ms.end())
+          {
+               cout<<0<<endl;
+               continue;
+          }
+          while(ms.begin()!=ms.end())
+          {
+               int flag=0;
+               for(auto itr = ms.begin();itr!=ms.end();itr++)
+               {
+
+                    if((*itr+x)%k == 0)
+                    {
+                         ms.erase(itr);
+                         flag=1;
+                         x++;
+                         break;
+                    }
+               }
+               if(flag==0)    x++;
+          }
+          cout<<x<<endl;
      }
 	return 0;
 }
