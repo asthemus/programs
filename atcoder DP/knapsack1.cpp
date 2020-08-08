@@ -18,5 +18,26 @@ using namespace std;
 
 int32_t main()
 {
-     
+     int n,w;
+     scanf("%lld%lld",&n,&w);
+     vec wts;
+     vec vals;
+     for(int i=0;i<n;i++){
+          int t1,t2;
+          scanf("%lld%lld",&t1,&t2);
+          wts.pbc(t1);
+          vals.pbc(t2);
+     }
+     twod knapsack(w+1, vec (n+1, 0));
+     for(int i=1;i<=n;i++){
+          int wt = wts[i-1];
+          for(int j=1;j<=w;j++){
+               if(j<wt)
+                    knapsack[j][i] = knapsack[j][i-1];
+               else
+                    knapsack[j][i] = max(knapsack[j][i-1],knapsack[j-wt][i-1]+vals[i-1]);
+          }
+     }
+     cout<<knapsack[w][n];
+     return 0;
 }
