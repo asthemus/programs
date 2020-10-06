@@ -1,47 +1,47 @@
+#include <unistd.h>
 #include <bits/stdc++.h>
 using namespace std;
+#define int long long int
+#define istream ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+#define uint unsigned int
+#define mod 1000000007
+#define vec vector<int>
+#define twod vector<vector<int>>
+#define mp make_pair
+#define pbc push_back
+#define all(a) a.begin(),a.end()
+#define debug1(x)                cout<<#x<<"="<<x<<endl;
+#define debug2(x,y)              cout<<#x<<"="<<x<<" "<<#y<<"="<<y<<endl;
+#define debug3(x,y,z)            cout<<#x<<"="<<x<<" "<<#y<<"="<<y<<" "<<#z<<"="<<z<<endl;
+#define debug4(x,y,z,w)          cout<<#x<<"="<<x<<" "<<#y<<"="<<y<<" "<<#z<<"="<<z<<" "<<#w <<"="<<w<<endl;
+#define debugarray(arr,j,n)      for(int i=j;i<n;i++) {cout<<"i="<<i<<" arr[i]="<<arr[i]<<"\n";};
 
-int DP[1001][1001]={0};
-
-int knapsack(int price[], int pages[], int n, int maxprice)
+int32_t main()
 {
-     int take=0,donttake=0;
-     if(DP[n][maxprice]!=0)
-          return DP[n][maxprice];
-
-     if(n==0)
-     {
-          if(price[n]<=maxprice)
-          {
-               DP[n][maxprice] = pages[0];
-               return DP[n][maxprice];
+     int n,k,t1;
+     cin>>n>>k;
+     vec cost;
+     vec pages;
+     for(int i=0;i<n;i++){
+          scanf("%lld",&t1);
+          cost.pbc(t1);
+     }
+     for(int i=0;i<n;i++){
+          scanf("%lld",&t1);
+          pages.pbc(t1);
+     }
+     vec dp1(k+1, 0);
+     vec dp2(k+1, 0);
+     for(int i=1;i<=n;i++){
+          int cost_book = cost[i-1];
+          for(int j=0;j<=k;j++){
+               if(j<cost_book)
+                    dp1[j] = dp2[j];
+               else
+                    dp1[j] = max(dp2[j], dp2[j-cost_book]+pages[i-1]);
           }
-          DP[n][maxprice]=0;
-          return 0;
+          dp1.swap(dp2);
      }
-     if(price[n]<=maxprice)
-          take = pages[n] + knapsack(price,pages,n-1,maxprice-price[n]);
-
-     donttake = knapsack(price,pages,n-1,maxprice);
-     DP[n][maxprice] = max(take,donttake);
-     return DP[n][maxprice];
-
-
-}
-
-int main()
-{
-     int n,x,temp;
-     cin>>n>>x;
-     int price[n];
-     int pages[n];
-     for(int i=0;i<n;i++)
-     {
-          cin>>price[i];
-     }
-     for(int i=0;i<n;i++)
-     {
-          cin>>pages[i];
-     }
-     cout<<knapsack(price,pages,n-1,x);
+     cout<<dp2[k];
+     return 0;
 }
